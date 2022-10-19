@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+{% block content %}
+<h1>Поиск</h1>
+<hr>
+<form action="" method="get">
+    {% csrf_token %}
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+{% if object_list %}
+       <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Дата</td>
+               <td>Текст</td>
+               <td>Автор</td>
+           </tr>
+           {% for post in object_list %}
+               <td>{{ post.title }}</td>
+               <td>{{ post.dateCreation|date:'d.m.y' }}</td>
+               <td>{{ post.text|mat|truncatechars:20 }}</td>
+               <td>{{ post.author }}</td>
+           </tr>
+            {% endfor %}
+
+       </table>
+   {% else %}
+       <!-- Если товаров нет, говорим, что товаров нет ;) -->
+       <h2>Такой новости нет, введите другие критерии поиска</h2>
+   {% endif %}
+
+{% endblock content %}

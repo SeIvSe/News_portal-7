@@ -1,0 +1,27 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+<!-- Название у нас будет Product -->
+{% block title %}
+Post
+{% endblock title %}
+<!--{% load cache %}  Загружаем кэширование -->
+ <!--   {% cache 30 header %}  Кэшируем отдельный блок на 30 секунд -->
+    <!--   {% block header %} -->
+    <!--   {% endblock header %} -->
+ <!--  {% endcache %} -->
+
+<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+{% block content %}
+<h1>{{ post }}</h1>
+
+<hr><br>
+{% if user.is_authenticated %}
+    {% if not request.user|has_group:news_item.category %}
+        <button> <a href="{{ request.get_full_path }}/add_subscribe"> Подписаться</a> </button>
+    {% else %}
+        <button> <a style="color: red" href="{{ request.get_full_path }}/del_subscribe"> Отменить подписку</a> </button>
+    {% endif %}
+{% endif %}
+
+{% endblock content %}
